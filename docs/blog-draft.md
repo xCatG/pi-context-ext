@@ -63,8 +63,9 @@ follow-up, and continue after compaction and restart. This was a small diagnosti
 suite, not a SWE-bench leaderboard run. Each model/task/arm combination got one
 observation, so these numbers do not deserve population-level conclusions.
 
-The plan also included adaptive compaction timing. My qualification work exposed an overlapping-compaction problem in the pinned Pi
-version, so adaptive mode was deferred before becoming a supported arm. It was
+The plan also included adaptive compaction timing. During qualification, I found
+an overlapping-compaction problem in the pinned Pi version, so adaptive mode
+was deferred before becoming a supported arm. It was
 never measured in the efficacy comparison.
 
 The core results looked like this:
@@ -128,7 +129,11 @@ explicit reasoning.
 
 Across the six Qwen tasks, forwarded requests increased from 244 to 322. Mean
 inclusive input per request increased from about 13,533 tokens to 24,055. Both
-the call count and the request size mattered.
+the call count and the request size mattered, but request size was the larger
+multiplicative change: about **78% larger requests × 32% more calls**. The
+extension added context directly, while checkpoints and repeated reads added
+calls and accumulated history. This accounting does not isolate how much of
+either increase each mechanism caused.
 
 There were concrete execution problems too: repeated investigation, malformed
 tool arguments, missing test commands, and plans that violated constraints.
@@ -177,7 +182,8 @@ redundant tool results instead. Keep the raw session untouched. Preserve recent
 context. Replace an old duplicate read with a short stub only at fixed growth
 boundaries, so we aren't rewriting history on every call.
 
-We narrowed the first test further. No bash-output truncation; that's where
+A further review Yenchi brought in helped narrow the first test substantially.
+No bash-output truncation; that's where
 the useful traceback might be. No task card. No custom summary. Only successful
 full-file reads with identical later content at the same path. Partial reads,
 failed reads, truncated output, and changed historical versions stayed intact.
@@ -189,8 +195,9 @@ over archived stock sessions and check whether there was enough to remove.
 
 The policy protected the most recent 20K tokens and advanced in 20K growth
 chunks. Twenty-four sessions accumulated less than 40K tokens in the offline
-representation. Across all 196 native read results, only 18 were repeated,
-identical full reads before applying recency or compaction-visibility filtering.
+representation. Of 196 native read results, 114 met full-read eligibility; of
+those, only 18 repeated identical full content before applying recency or
+compaction-visibility filtering.
 
 These were tokenizer counts over a documented text representation, not exact
 provider requests. The real transcripts exercised the transform's invariants
@@ -230,8 +237,8 @@ calls made the conclusion less exciting.
 
 Direct replay of B's own history estimated only **1.8% less decision input for
 Sol and 4.0% for Luna**. Those are tokenizer-proxy estimates, not exact provider
-charges. Both B runs actually used slightly more **uncached** input; their lower
-inclusive totals came from fewer cached tokens. Sol B also made more calls and
+charges. **Both B runs actually used slightly more uncached input; their lower
+inclusive totals came from fewer cached tokens.** Sol B also made more calls and
 took longer. A different sequence of edits, reads, and cache hits can change the
 total without proving that the subtraction caused the difference.
 
@@ -271,6 +278,11 @@ This was the reframing I should have reached earlier. Sending a 20K-token
 history fifty times costs roughly a million input tokens. It still isn't a
 million-token history.
 
+In the original Qwen, Sol, and Astra stock runs shown in the explorer, the
+largest recorded input was **36,539 tokens—under 14% of even the smallest
+configured window, 262,144 tokens**. That is a measured peak across those stock
+runs, not a claim about every experimental request or a tokenizer proxy.
+
 Our workloads exposed coding mistakes, harness problems, and repeated work.
 They offered much weaker evidence that natural context-limit pressure was the
 thing holding the agent back. W6 deliberately exercised compaction and restart;
@@ -290,7 +302,9 @@ didn't establish the problem strongly enough to justify this solution.
 
 The research is shelved. My recommendation to Yenchi is stock Pi for ordinary
 work. I don't have evidence that justifies expanding the memory system or
-manufacturing a longer task to give it somewhere to win.
+constructing a longer task solely to create pressure and give it somewhere to
+win. A context failure arising naturally in real work would be a different
+reason to investigate.
 
 The [experimental extension is open source under MIT](https://github.com/xCatG/pi-context-ext).
 The repository separates the original scored source, the repaired preview, and

@@ -1,0 +1,12 @@
+{
+  "snapshotTimestampUtc": "2026-09-13T04:54:57.425Z",
+  "source": "Local Codex session token_count event, info.total_token_usage",
+  "scope": "Parent Codex conversation recorded counter; separate subagent and Claude sessions not reconciled. Benchmark model calls are reported separately.",
+  "inputTokens": 195519215,
+  "cachedInputTokens": 193030784,
+  "uncachedInputTokens": 2488431,
+  "outputTokens": 485546,
+  "reasoningOutputTokens": 158106,
+  "totalTokens": 196004761,
+  "note": "Cached input is included in input; reasoning is included in output. Snapshot is not a dollar charge, quota percentage, or final whole-project total. Conversation continued afterward."
+}

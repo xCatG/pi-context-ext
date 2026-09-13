@@ -292,11 +292,32 @@ reasoning tokens are already part of output and are not added again. Six
 original forwarded calls had no reported token usage, so this is a known-usage
 lower bound, not an exact total.
 
-It also excludes setup and smoke tests, repair diagnostics, and the Codex,
-Claude, and other review-agent conversations used to build, analyze, and write
-about the experiment. I do not have a reconciled token ledger for that surrounding
-work. This is the benchmark subtotal, not the whole project's footprint—and
-subscription and local compute should not be mistaken for zero cost.
+It excludes setup and smoke tests, repair diagnostics, and the Codex, Claude,
+and other review-agent conversations used to build, analyze, and write about
+the experiment. Subscription and local compute should not be mistaken for
+zero cost.
+
+Then Yenchi clarified that he meant *this Codex conversation*. I checked its
+local session counter. **About 196 million tokens.** Yes, the conversation
+about reducing context overhead deserves a disclosure of its own.
+
+| Codex task counter at the recorded snapshot | Tokens |
+| --- | ---: |
+| Cached input | 193,030,784 |
+| Uncached input | 2,488,431 |
+| Output, including reasoning | 485,546 |
+| **Total** | **196,004,761** |
+
+This [numeric snapshot](https://github.com/xCatG/pi-context-ext/blob/main/results/codex-task-usage.json)
+was recorded on September 12, 2026, at 9:54 p.m. Pacific, while revising this
+post. Roughly **98.7% of the input was cached**. The counter accumulates input
+across calls; it is not 196 million tokens of unique conversation, new writing,
+or uncached work. It is also not a dollar charge or a quota percentage.
+
+The task counter and benchmark subtotal cover different work. I have not
+reconciled separate subagent or Claude sessions into a whole-project ledger,
+and the conversation continued after this snapshot. These are two scoped
+measurements, not a final all-in total.
 
 ## A large bill is not a full context window
 

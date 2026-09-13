@@ -37,7 +37,7 @@ Successful paid-provider usage reports totaled $0.571657215; conservative accoun
 
 ## Offline pruning screen
 
-A later isolated prototype tested deterministic duplicate-full-read removal on archived stock sessions. Only successful complete text reads with identical later content and exact path arguments were eligible; partial, failed and truncated reads were excluded. A 20K growth chunk and 20K protected recency policy produced zero replacements across 29 sessions and 1,668 prefixes. Of 196 native read results, 114 were eligible full reads and only 18 repeated exact complete content before recency filtering. Twenty-four sessions accumulated under 40K proxy tokens.
+A later isolated prototype tested deterministic duplicate-full-read removal on archived stock sessions. Only successful complete text reads with identical later content and exact path arguments were eligible; partial, failed and truncated reads were excluded. A 20K growth chunk and 20K protected recency policy produced zero replacements across 29 sessions and 1,668 prefixes. Of 196 native read results, 114 were eligible full reads and only 18 repeated exact complete content before recency or compaction-visibility filtering. Twenty-four sessions accumulated under 40K proxy tokens.
 
 The counts used o200k_base over a visible-message JSON proxy, not provider request serialization or Qwen's tokenizer. Three assignments had no archived session directory. The live gate required two cells with at least 5% proxy savings and no invariant failures; it failed, so no live pruning calls followed. The prototype had documented witness/branch-fixture limitations and was not promoted into this extension.
 

@@ -1,0 +1,23 @@
+[
+  {
+    "original": "prune.mjs",
+    "published": "prune.mjs",
+    "originalSha256": "49c190c35d98280104c9d6751a3f7a9b74ccc23b47c527e559a7769a1b13676f",
+    "publishedSha256": "87cc0c81c134095da2f4f7c75375df8ed31978dfa4fa832239cf9455a6e18176",
+    "change": "Tokenizer import changed from private tooling path to the same pinned package export."
+  },
+  {
+    "original": "prune.test.mjs",
+    "published": "prune.node-test.mjs",
+    "originalSha256": "7c8452611f09d618457227f0981992abb3e2890d943586d895b8cc2147b27194",
+    "publishedSha256": "7c8452611f09d618457227f0981992abb3e2890d943586d895b8cc2147b27194",
+    "change": "Filename changed to keep Node tests separate from root Vitest discovery; contents byte-identical."
+  },
+  {
+    "original": "extension.ts",
+    "published": "extension.ts",
+    "originalSha256": "ff9d4c30549deb8c581f109a3640c7d26ef17de3e3b3a2717b8aa8b687ba3f02",
+    "publishedSha256": "ff9d4c30549deb8c581f109a3640c7d26ef17de3e3b3a2717b8aa8b687ba3f02",
+    "change": "Byte-identical."
+  }
+]

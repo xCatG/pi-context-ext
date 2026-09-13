@@ -101,7 +101,7 @@ correct patch.
 
 ## More tokens did not mean more reasoning
 
-Qwen and Nemotron had thinking disabled and a 4,096-token output cap. GPT used
+In the original comparison, Qwen and Nemotron had thinking disabled and a 4,096-token output cap. GPT used
 medium thinking. That setting difference makes cross-model stories about
 "frontier memory" versus "small-model memory" especially shaky.
 
@@ -148,8 +148,74 @@ These were tokenizer counts over a documented text representation, not exact
 provider requests. The real transcripts exercised the transform's invariants
 mostly by doing nothing; synthetic tests covered the actual replacements.
 
-The live-call gate failed. We didn't shrink the recency window until the chart
-looked better.
+The live-call gate failed. That result stayed frozen.
+
+## I asked for one last try
+
+I wasn't quite ready to leave it there. We made one final, separately specified
+attempt: stock Pi against subtraction alone, with no memory tools, task card,
+custom summary, or extra model-facing guidance. This time the policy used 8K
+growth chunks and protected the most recent 4K proxy tokens. We also changed the
+offline gate to require actual replacement exposure rather than the first
+screen's savings threshold. Those were new experiment choices, fixed before
+replay and live outcomes, not evidence that the original gate had passed.
+
+Nine mechanics tests passed, and replay finally found some duplicates to remove.
+Then we ran one known, two-stage coding task per model and arm: Sol, Luna,
+Nemotron, local Qwen, and Gemini Flash. That was ten runs, not another open-ended
+search. Both arms got the same explicit file-scope constraints and test setup.
+Pi's declared window was reduced to 64K, and the task retained its scheduled
+compaction/restart handoff. Thinking was enabled this time; Qwen got up to
+30 minutes per request and four hours per arm.
+
+| Model | Stock / subtraction outcome | Subtraction total-token change |
+| --- | --- | ---: |
+| GPT-5.6 Sol | Both accepted | -3.4% |
+| GPT-5.6 Luna | Both accepted | -11.6% |
+| Nemotron free | Both failed | Not an efficiency result |
+| Local Qwen | Both failed | Not an efficiency result |
+| Gemini Flash | Both budget-limited and incomplete | Not an efficiency result |
+
+For a moment, Luna looked like the answer. It crossed our predeclared 10%
+numerical signal threshold, and both patches passed. But looking at the actual
+calls made the conclusion less exciting.
+
+Direct replay of B's own history estimated only **1.8% less decision input for
+Sol and 4.0% for Luna**. Those are tokenizer-proxy estimates, not exact provider
+charges. Both B runs actually used slightly more **uncached** input; their lower
+inclusive totals came from fewer cached tokens. Sol B also made more calls and
+took longer. A different sequence of edits, reads, and cache hits can change the
+total without proving that the subtraction caused the difference.
+
+Only Sol and Luna exercised pruning at all. Nemotron, Qwen, and Gemini had zero
+transformed requests in their experimental arms. Their outcomes cannot tell us
+whether subtraction helps weaker models.
+
+Qwen gave us another concrete reminder that remembering and reasoning are
+different problems. Its experimental run took about 71 minutes, used 22,649
+reported reasoning tokens, and successfully compacted and restarted. The summary
+retained the file-scope constraint. The model reconsidered that constraint and
+then incorrectly decided it could add two new declaration files anyway. The
+patch failed the explicitly disclosed scope check. It hadn't forgotten the
+rule; it had interpreted it incorrectly.
+
+Stock Qwen spent about 67 minutes before exhausting its initial-stage call cap,
+including prolonged test debugging and a bad whitespace assertion. Gemini's
+initial patches passed their tests, but the agents kept making calls instead of
+ending the stage. Their next full-context cost reservations exceeded the
+conservative paid ceiling before they reached integration. Those are incomplete
+runs, not token-saving wins.
+
+No arm naturally reached the context limit, even with the smaller declared
+window. Three had the scheduled manual compaction; the rest either had too
+little history to compact or stopped before handoff.
+
+The final attempt used 3.51 million total tokens over about 2 hours 48 minutes.
+New paid usage reported by the provider was about $0.296; subscription and local
+compute were unpriced. [The complete report and aggregate data](https://github.com/xCatG/pi-context-ext/blob/main/docs/subtraction-v2.md)
+preserve all ten outcomes. Luna's numerical signal could justify a future
+proposal, but it didn't establish a reason to ship this extension for everyday
+work. I stopped there.
 
 ## A large bill is not a full context window
 
@@ -178,8 +244,9 @@ The research is shelved. I'm using stock Pi rather than expanding the memory
 system or manufacturing a longer task just to give it somewhere to win.
 
 The [experimental extension is open source under MIT](https://github.com/xCatG/pi-context-ext).
-The repository separates the original scored source from the repaired preview,
-and includes aggregate results and the limitations behind them. Raw sessions
+The repository separates the original scored source, the repaired preview, and
+the final subtraction-only prototype, and includes aggregate results and the
+limitations behind them. Raw sessions
 and the complete historical benchmark environment are not public, so this is
 not a claim of full independent reproducibility. The mechanics tests are
 reproducible; the public aggregates can be checked arithmetically.

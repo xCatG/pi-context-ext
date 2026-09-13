@@ -1,0 +1,21 @@
+{
+  "name": "pi-context-subtraction-experiment",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "pi": {
+    "extensions": [
+      "./extension.ts"
+    ]
+  },
+  "scripts": {
+    "test": "node --test prune.node-test.mjs"
+  },
+  "dependencies": {
+    "gpt-tokenizer": "4.0.0"
+  }
+}

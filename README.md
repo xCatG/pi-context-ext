@@ -7,6 +7,7 @@ An experimental organized-context extension for **Pi 0.85.1**. It retains attrib
 - [Experiment, results and limitations](docs/experiment.md)
 - [Final subtraction-only attempt](docs/subtraction-v2.md)
 - [Blog draft](docs/blog-draft.md)
+- [Interactive call-shape explorer and design diagram](visualizations/context-shapes)
 - [Extension usage and limitations](USAGE.md)
 - [Public aggregate data](results/aggregate.json)
 
@@ -41,6 +42,7 @@ Choose and authenticate your own model in Pi. This project contains no credentia
 npm run check
 node scripts/verify-results.mjs
 node scripts/verify-subtraction-results.mjs
+node scripts/verify-context-viewer.mjs
 ```
 
 Tests exercise mechanics with scripted providers. Public aggregates are arithmetically checkable. Raw model sessions and the complete historical benchmark environment are not distributed; this is not a fully reproducible public benchmark release.

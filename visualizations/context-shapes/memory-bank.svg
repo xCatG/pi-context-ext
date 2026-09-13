@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="720" viewBox="0 0 1080 720" role="img" aria-labelledby="title desc">
+<title id="title">The memory bank I added, and what it added to a call</title>
+<desc id="desc">Original scored design. A durable session stores user anchors, source observations, claims and revisions, and open work, plus pins and lifecycle records. A selector and admission gate produce a transient JSON projection appended after native conversation messages. The outgoing call also adds guidance to system instructions, schemas for checkpoint and recall tools, and attribution wrappers around native summaries. The whole bank is not injected. The later subtraction design adds none of these components and only replaces eligible duplicate-read results with stubs.</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="none" stroke="#a06d20" stroke-width="1.5"/></marker></defs>
+<rect width="1080" height="720" rx="16" fill="#f4f7f6"/>
+<g font-family="system-ui,sans-serif" fill="#182d36">
+<text x="32" y="35" font-size="12" font-weight="700" letter-spacing="1.3" fill="#116c66">ORIGINAL SCORED DESIGN · CONCEPTUAL, NOT TO SCALE</text>
+<text x="32" y="72" font-size="28" font-weight="700">The memory bank I added—and what entered a call</text>
+<rect x="32" y="105" width="325" height="366" rx="12" fill="white" stroke="#ccd9dd"/>
+<text x="50" y="134" font-size="18" font-weight="700">Durable bank in the session</text>
+<text x="50" y="157" font-size="14" fill="#52656d">Captured facts + model checkpoints</text>
+<g fill="#e9f1ef" stroke="#d3e1df"><rect x="50" y="176" width="289" height="53" rx="7"/><rect x="50" y="239" width="289" height="53" rx="7"/><rect x="50" y="302" width="289" height="53" rx="7"/><rect x="50" y="365" width="289" height="53" rx="7"/></g>
+<g font-size="16" font-weight="650"><text x="63" y="198">User anchors</text><text x="63" y="261">Source observations</text><text x="63" y="324">Claims + revisions</text><text x="63" y="387">Open work</text></g>
+<g font-size="13" fill="#52656d"><text x="63" y="217">Goals, constraints, quoted source text</text><text x="63" y="280">Evidence text, references, version identity</text><text x="63" y="343">Interpretations, uncertainty, supersession</text><text x="63" y="406">Pending tasks and unresolved operations</text><text x="50" y="446">Pins and lifecycle records are also retained.</text></g>
+<path d="M357 290H467" stroke="#a06d20" stroke-width="2" marker-end="url(#arrow)"/>
+<g font-size="13" fill="#855c1d" text-anchor="middle"><text x="411" y="249">Select</text><text x="411" y="268">+ serialize</text><text x="411" y="318">Admission</text><text x="411" y="337">gate</text></g>
+<rect x="480" y="105" width="568" height="366" rx="12" fill="white" stroke="#ccd9dd"/>
+<text x="499" y="134" font-size="18" font-weight="700">Outgoing model call</text>
+<text x="499" y="157" font-size="14" fill="#52656d">Normal Pi context, with additions highlighted</text>
+<rect x="499" y="177" width="252" height="47" rx="6" fill="#e9f1ef"/><rect x="760" y="177" width="270" height="47" rx="6" fill="#fff0cf" stroke="#d9b875"/>
+<text x="513" y="206" font-size="15">System instructions</text><text x="772" y="206" font-size="15">+ context guidance</text>
+<rect x="499" y="234" width="252" height="52" rx="6" fill="#e9f1ef"/><rect x="760" y="234" width="270" height="52" rx="6" fill="#fff0cf" stroke="#d9b875"/>
+<text x="513" y="265" font-size="15">Native tool schemas</text><text x="772" y="256" font-size="14">+ context_checkpoint</text><text x="772" y="275" font-size="14">+ context_recall</text>
+<rect x="499" y="296" width="531" height="65" rx="6" fill="#e9f1ef"/>
+<text x="513" y="321" font-size="15">Native conversation + tool results</text>
+<rect x="512" y="331" width="505" height="21" rx="4" fill="#fff0cf"/>
+<text x="523" y="347" font-size="12">+ attribution wrapper when a compaction / branch summary exists</text>
+<rect x="499" y="371" width="531" height="77" rx="6" fill="#fff0cf" stroke="#d9b875"/>
+<text x="513" y="395" font-size="16" font-weight="700">+ appended JSON projection</text>
+<text x="513" y="416" font-size="13">Required anchors and open work + selected optional records</text>
+<text x="513" y="435" font-size="13">Includes IDs, attribution, omissions, and revision metadata</text>
+<text x="32" y="503" font-size="15" font-weight="650">Stored ≠ injected.</text><text x="187" y="503" font-size="15">The whole bank stayed recoverable; only a selected view entered the call.</text>
+<text x="32" y="529" font-size="14" fill="#52656d">Checkpoint/recall calls and their results also joined the ordinary conversation when used.</text>
+<line x1="32" x2="1048" y1="550" y2="550" stroke="#ccd9dd"/>
+<text x="32" y="581" font-size="18" font-weight="700">The final subtraction-only attempt</text>
+<rect x="32" y="599" width="1016" height="56" rx="8" fill="white" stroke="#ccd9dd"/>
+<g font-size="14"><text x="49" y="622">Same native instructions, tools, and conversation.</text><text x="49" y="644">Only an eligible older duplicate-read result becomes a stub; its later identical full read remains.</text></g>
+<text x="32" y="687" font-size="13" fill="#52656d">No bank, memory tools, guidance, custom summary, or appended projection in subtraction B. Exact public source linked in the post.</text>
+</g></svg>

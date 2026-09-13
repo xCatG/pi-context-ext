@@ -1,9 +1,9 @@
 {
   "name": "pi-context-ext",
-  "version": "0.2.0-preview.2",
+  "version": "0.0.0-subtraction-v2",
   "private": true,
   "type": "module",
-  "description": "Organized context and exact evidence recall for Pi, with native compaction timing",
+  "description": "Final subtraction v2 — frozen experimental snapshot",
   "pi": {
     "extensions": [
       "./src/index.ts"
@@ -21,9 +21,10 @@
     "node": ">=22.19.0"
   },
   "scripts": {
-    "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "check": "npm run test && npm run typecheck"
+    "verify:snapshot": "node scripts/verify-snapshot.mjs",
+    "check": "npm test && npm run typecheck && npm run verify:snapshot",
+    "test": "node --test src/prune.node-test.mjs"
   },
   "peerDependencies": {
     "@earendil-works/pi-ai": "0.85.1",
@@ -45,5 +46,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/xCatG/pi-context-ext.git"
+  },
+  "dependencies": {
+    "gpt-tokenizer": "4.0.0"
   }
 }

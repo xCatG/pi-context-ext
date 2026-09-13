@@ -1,24 +1,17 @@
 {
-  "rootVersion": "0.2.0-preview.2",
-  "sourceSnapshot": "a171efb0f6b9c12912b667084ca06089ae3bd5dd",
-  "originalScoredSnapshot": "ccde69c",
-  "note": "Local source snapshot IDs; public history begins with this sanitized export. Runtime source is unmodified; metadata/docs licensed and adapted for public distribution.",
-  "sourceHashes": {
-    "src/admission.ts": "eb4bb666f873c0a1c2dddac9e7bf80e9861da75556d6cb183bd24bd468e80f88",
-    "src/capture.ts": "118f878605a3e87ad9f34e3e50d2b8a73fdebc7bcdd3e390e62be63404a1df20",
-    "src/freshness.ts": "84af193e864f8f5daeb771d3da15cf86e9f4534287fc7f832ee1254da5531aa4",
-    "src/index.ts": "840b32f2a276518952d94957e5979022ca0be135e8320fd578f28315e4dde6e9",
-    "src/inspector.ts": "fac8918ef4bf29a2c85a40ade01bcbda82897ab6869ebde92d33faaf33cf8fed",
-    "src/metrics.ts": "a1b7cd25967cdab326808690ffde7519fad99a698cf0125527aab5cbb1ea1494",
-    "src/projection.ts": "88491a49da566c473f1212a2da0477e5924b6e6663fbac359fcd4db4a61e805f",
-    "src/recall.ts": "f0dc77c5da9e08bf9bc7071089d5e69f5b00bd99a6f723ee2ca18a9bd8df12fc",
-    "src/records.ts": "370b160ba1f8a94159302be6ba665c598ba9a034f6b77c7c1477079a0aa7716d",
-    "experiments/scored-prototype/src/capture.ts": "118f878605a3e87ad9f34e3e50d2b8a73fdebc7bcdd3e390e62be63404a1df20",
-    "experiments/scored-prototype/src/freshness.ts": "84af193e864f8f5daeb771d3da15cf86e9f4534287fc7f832ee1254da5531aa4",
-    "experiments/scored-prototype/src/index.ts": "8b43d1e3e16eaab82ea95e9eba4e8d9bc1ff1274777e8ce37eae7531c3237c1b",
-    "experiments/scored-prototype/src/metrics.ts": "a1b7cd25967cdab326808690ffde7519fad99a698cf0125527aab5cbb1ea1494",
-    "experiments/scored-prototype/src/projection.ts": "7c26303e7f47755d1bb18b0c70a9c24152c7e875180e5c5f3e6bd002f5544a80",
-    "experiments/scored-prototype/src/recall.ts": "b1c02229a35170e6bc54edccb628c52e48b71ce0dd6ed01883e6cce4e3fbc2d5",
-    "experiments/scored-prototype/src/records.ts": "370b160ba1f8a94159302be6ba665c598ba9a034f6b77c7c1477079a0aa7716d"
-  }
+  "variant": "Final subtraction v2",
+  "publicBase": "c74f5d4990783c5e14671df9f307f8e4a4c627c1",
+  "note": "Runtime files are byte-identical to the corresponding public export; only their checkout locations change. Public tokenizer import adaptation is documented in experiments/subtraction-v2/SOURCE-PROVENANCE.json. These snapshots are historical research artifacts, not maintained product branches.",
+  "files": [
+    {
+      "source": "experiments/subtraction-v2/extension.ts",
+      "path": "src/index.ts",
+      "sha256": "ff9d4c30549deb8c581f109a3640c7d26ef17de3e3b3a2717b8aa8b687ba3f02"
+    },
+    {
+      "source": "experiments/subtraction-v2/prune.mjs",
+      "path": "src/prune.mjs",
+      "sha256": "87cc0c81c134095da2f4f7c75375df8ed31978dfa4fa832239cf9455a6e18176"
+    }
+  ]
 }

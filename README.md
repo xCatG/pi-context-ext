@@ -1,42 +1,29 @@
-# Pi context extension — a shelved experiment
+# Final subtraction v2
 
-An experimental organized-context extension for **Pi 0.85.1**. It retains attributed user constraints, source observations, interpretations and open work, with exact-history recall and restart recovery.
+This is the `codex/subtraction-v2` comparison branch. The active implementation lives in [src/index.ts](src/index.ts), with a consistent entry point across both variants.
 
-**The experiment did not establish a coding benefit over stock Pi.** It added cost, exposed implementation defects, and was shelved. Use stock Pi for ordinary work. This repository is a research artifact, not a performance recommendation.
+This is the **measured subtraction-only** implementation. The nine mechanics tests are retained with their import adjusted for the branch layout. They do not reproduce the private live benchmark.
 
-- [Experiment, results and limitations](docs/experiment.md)
-- [Final subtraction-only attempt](docs/subtraction-v2.md)
-- [Blog draft](docs/blog-draft.md)
-- [Extension usage and limitations](USAGE.md)
-- [Public aggregate data](results/aggregate.json)
+## Run this snapshot
 
-## Source versions
-
-The root contains the repaired `0.2.0-preview.2` source. Later diagnostic passes on reused tasks validate repairs, not a new A/B coding advantage. The original scored source is preserved in [experiments/scored-prototype](experiments/scored-prototype). Do not attribute the original scores to the repaired preview.
-
-The root implementation uses a transient projection, `context_checkpoint` and `context_recall`. It is not the later pruning idea. The first offline pruning screen failed its gate. A separate [subtraction-only experiment](experiments/subtraction-v2) subsequently completed ten live runs with a new frozen policy; it did not establish an everyday coding benefit and is not enabled by the root package.
-
-## Try locally
-
-Requires Node >=22.19.0 and Pi 0.85.1.
+Requires Node >=22.19.0 and Pi 0.85.1. Authenticate your own model.
 
 ```sh
+git switch codex/subtraction-v2
 npm ci --ignore-scripts
-npx pi -e ./src/index.ts
-```
-
-Choose and authenticate your own model in Pi. This project contains no credentials or bundled model service. `/context` inspects state; `/context mode off` disables new extension effects while retaining existing history. Adaptive compaction is unavailable. See [USAGE.md](USAGE.md) before experimenting.
-
-```sh
 npm run check
-node scripts/verify-results.mjs
-node scripts/verify-subtraction-results.mjs
+npx pi --no-extensions -e ./src/index.ts
 ```
 
-Tests exercise mechanics with scripted providers. Public aggregates are arithmetically checkable. Raw model sessions and the complete historical benchmark environment are not distributed; this is not a fully reproducible public benchmark release.
+Omit the extension argument to use stock Pi. Neither implementation is recommended for everyday adoption.
 
-## Project status and license
+## Compare
 
-Shelved September 12, 2026. No ongoing research loop or support commitment. Published under the [MIT license](LICENSE). Dependencies retain their respective licenses. npm publication is disabled (`private: true`); public source availability does not require an npm release.
+- [Other implementation](https://github.com/xCatG/pi-context-ext/tree/codex/organized-scored)
+- [Direct snapshot diff](https://github.com/xCatG/pi-context-ext/compare/codex%2Forganized-scored..codex%2Fsubtraction-v2)
+- [Main comparison guide and repaired preview](https://github.com/xCatG/pi-context-ext)
+- [Original results](docs/experiment.md) and [subtraction results](docs/subtraction-v2.md)
 
-This project is independent of RAH and uses none of its repositories or services at runtime.
+These branches make code inspection convenient. The measurements used different cohorts and policies, so this diff is not a head-to-head efficacy comparison. The full source archive and reports remain alongside the active root source. SOURCE-PROVENANCE.json identifies the active snapshot. The repaired preview's tests were removed from this branch to avoid applying them to a different historical implementation; they remain on main.
+
+MIT licensed. No raw traces, credentials, or model service are included.

@@ -272,6 +272,32 @@ preserve all ten outcomes. Luna's numerical signal could justify a future
 proposal, but it didn't establish a reason to ship this extension for everyday
 work. I recommended stopping there, and the experiment ended without another sweep.
 
+## What did the experiment itself cost?
+
+The irony deserves its own accounting: **the published benchmark runs consumed
+at least 28.03 million input-plus-output tokens.**
+
+| Recorded benchmark cohort | Known tokens |
+| --- | ---: |
+| Original pilot, all attempted model routes | 14,929,814 |
+| Separate Nemotron runs | 6,707,723 |
+| Separate Gemini runs | 2,888,296 |
+| Final subtraction attempt | 3,506,414 |
+| **Total** | **28,032,247** |
+
+These are sums of the [original aggregate](https://github.com/xCatG/pi-context-ext/blob/main/results/aggregate.json)
+and [final subtraction aggregate](https://github.com/xCatG/pi-context-ext/blob/main/results/subtraction-v2.json).
+They include cached input and failed or incomplete runs with reported usage;
+reasoning tokens are already part of output and are not added again. Six
+original forwarded calls had no reported token usage, so this is a known-usage
+lower bound, not an exact total.
+
+It also excludes setup and smoke tests, repair diagnostics, and the Codex,
+Claude, and other review-agent conversations used to build, analyze, and write
+about the experiment. I do not have a reconciled token ledger for that surrounding
+work. This is the benchmark subtotal, not the whole project's footprint—and
+subscription and local compute should not be mistaken for zero cost.
+
 ## A large bill is not a full context window
 
 This was the reframing I should have reached earlier. Sending a 20K-token
@@ -333,6 +359,7 @@ that it improves coding performance. We did not show that.
 If a real long-running coding task later exposes a specific context failure,
 there will be a reason to revisit the idea. For now, the useful result was
 learning when to stop.
+
 ---
 
 *Written by Codex (GPT-6 Astra), which implemented the extension, ran the

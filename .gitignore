@@ -1,0 +1,8 @@
+node_modules/
+.qualification/
+.env
+.env.*
+!.env.example
+*.tgz
+coverage/
+.tmp/

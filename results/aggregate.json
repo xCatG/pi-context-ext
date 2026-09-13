@@ -1,0 +1,1135 @@
+{
+  "note": "Aggregate export only; missing usage is null; frozen acceptance labels retain confounds explained in docs/experiment.md. Raw traces are not distributed.",
+  "cells": [
+    {
+      "id": "M1-W1-A",
+      "cohort": "pilot",
+      "modelSlot": "M1",
+      "workload": "W1",
+      "arm": "A",
+      "status": "completed",
+      "acceptance": "accepted-in-result",
+      "forwardedCalls": 15,
+      "knownLogicalTokens": 95021,
+      "callsWithKnownLogicalTokens": 15
+    },
+    {
+      "id": "M1-W1-B",
+      "cohort": "pilot",
+      "modelSlot": "M1",
+      "workload": "W1",
+      "arm": "B",
+      "status": "completed",
+      "acceptance": "accepted-in-result",
+      "forwardedCalls": 17,
+      "knownLogicalTokens": 171935,
+      "callsWithKnownLogicalTokens": 17
+    },
+    {
+      "id": "M1-W3-A",
+      "cohort": "pilot",
+      "modelSlot": "M1",
+      "workload": "W3",
+      "arm": "A",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 54,
+      "knownLogicalTokens": 1313766,
+      "callsWithKnownLogicalTokens": 54
+    },
+    {
+      "id": "M1-W3-B",
+      "cohort": "pilot",
+      "modelSlot": "M1",
+      "workload": "W3",
+      "arm": "B",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 50,
+      "knownLogicalTokens": 1514396,
+      "callsWithKnownLogicalTokens": 50
+    },
+    {
+      "id": "M1-W6-B",
+      "cohort": "pilot",
+      "modelSlot": "M1",
+      "workload": "W6",
+      "arm": "B",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 66,
+      "knownLogicalTokens": 1746616,
+      "callsWithKnownLogicalTokens": 66
+    },
+    {
+      "id": "M1-W6-A",
+      "cohort": "pilot",
+      "modelSlot": "M1",
+      "workload": "W6",
+      "arm": "A",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 44,
+      "knownLogicalTokens": 577875,
+      "callsWithKnownLogicalTokens": 44
+    },
+    {
+      "id": "M2-W1-B",
+      "cohort": "pilot",
+      "modelSlot": "M2",
+      "workload": "W1",
+      "arm": "B",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 1,
+      "knownLogicalTokens": null,
+      "callsWithKnownLogicalTokens": 0
+    },
+    {
+      "id": "M2-W1-A",
+      "cohort": "pilot",
+      "modelSlot": "M2",
+      "workload": "W1",
+      "arm": "A",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 1,
+      "knownLogicalTokens": null,
+      "callsWithKnownLogicalTokens": 0
+    },
+    {
+      "id": "M2-W3-B",
+      "cohort": "pilot",
+      "modelSlot": "M2",
+      "workload": "W3",
+      "arm": "B",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 1,
+      "knownLogicalTokens": null,
+      "callsWithKnownLogicalTokens": 0
+    },
+    {
+      "id": "M2-W3-A",
+      "cohort": "pilot",
+      "modelSlot": "M2",
+      "workload": "W3",
+      "arm": "A",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 1,
+      "knownLogicalTokens": null,
+      "callsWithKnownLogicalTokens": 0
+    },
+    {
+      "id": "M2-W6-A",
+      "cohort": "pilot",
+      "modelSlot": "M2",
+      "workload": "W6",
+      "arm": "A",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 1,
+      "knownLogicalTokens": null,
+      "callsWithKnownLogicalTokens": 0
+    },
+    {
+      "id": "M2-W6-B",
+      "cohort": "pilot",
+      "modelSlot": "M2",
+      "workload": "W6",
+      "arm": "B",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 1,
+      "knownLogicalTokens": null,
+      "callsWithKnownLogicalTokens": 0
+    },
+    {
+      "id": "M3-W1-A",
+      "cohort": "pilot",
+      "modelSlot": "M3",
+      "workload": "W1",
+      "arm": "A",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 8,
+      "knownLogicalTokens": 42669,
+      "callsWithKnownLogicalTokens": 8
+    },
+    {
+      "id": "M3-W1-B",
+      "cohort": "pilot",
+      "modelSlot": "M3",
+      "workload": "W1",
+      "arm": "B",
+      "status": "completed",
+      "acceptance": "accepted-in-result",
+      "forwardedCalls": 11,
+      "knownLogicalTokens": 79034,
+      "callsWithKnownLogicalTokens": 11
+    },
+    {
+      "id": "M3-W3-A",
+      "cohort": "pilot",
+      "modelSlot": "M3",
+      "workload": "W3",
+      "arm": "A",
+      "status": "completed",
+      "acceptance": "accepted-in-result",
+      "forwardedCalls": 19,
+      "knownLogicalTokens": 315067,
+      "callsWithKnownLogicalTokens": 19
+    },
+    {
+      "id": "M3-W3-B",
+      "cohort": "pilot",
+      "modelSlot": "M3",
+      "workload": "W3",
+      "arm": "B",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 19,
+      "knownLogicalTokens": 264739,
+      "callsWithKnownLogicalTokens": 19
+    },
+    {
+      "id": "M3-W6-B",
+      "cohort": "pilot",
+      "modelSlot": "M3",
+      "workload": "W6",
+      "arm": "B",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 21,
+      "knownLogicalTokens": 207797,
+      "callsWithKnownLogicalTokens": 21
+    },
+    {
+      "id": "M3-W6-A",
+      "cohort": "pilot",
+      "modelSlot": "M3",
+      "workload": "W6",
+      "arm": "A",
+      "status": "completed",
+      "acceptance": "accepted-in-result",
+      "forwardedCalls": 21,
+      "knownLogicalTokens": 186051,
+      "callsWithKnownLogicalTokens": 21
+    },
+    {
+      "id": "M4-W1-B",
+      "cohort": "pilot",
+      "modelSlot": "M4",
+      "workload": "W1",
+      "arm": "B",
+      "status": "completed",
+      "acceptance": "accepted-in-result",
+      "forwardedCalls": 6,
+      "knownLogicalTokens": 34721,
+      "callsWithKnownLogicalTokens": 6
+    },
+    {
+      "id": "M4-W1-A",
+      "cohort": "pilot",
+      "modelSlot": "M4",
+      "workload": "W1",
+      "arm": "A",
+      "status": "completed",
+      "acceptance": "accepted-in-result",
+      "forwardedCalls": 6,
+      "knownLogicalTokens": 28299,
+      "callsWithKnownLogicalTokens": 6
+    },
+    {
+      "id": "M4-W3-B",
+      "cohort": "pilot",
+      "modelSlot": "M4",
+      "workload": "W3",
+      "arm": "B",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 19,
+      "knownLogicalTokens": 147855,
+      "callsWithKnownLogicalTokens": 19
+    },
+    {
+      "id": "M4-W3-A",
+      "cohort": "pilot",
+      "modelSlot": "M4",
+      "workload": "W3",
+      "arm": "A",
+      "status": "completed",
+      "acceptance": "accepted-in-result",
+      "forwardedCalls": 15,
+      "knownLogicalTokens": 117459,
+      "callsWithKnownLogicalTokens": 15
+    },
+    {
+      "id": "M4-W6-A",
+      "cohort": "pilot",
+      "modelSlot": "M4",
+      "workload": "W6",
+      "arm": "A",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 25,
+      "knownLogicalTokens": 177263,
+      "callsWithKnownLogicalTokens": 25
+    },
+    {
+      "id": "M4-W6-B",
+      "cohort": "pilot",
+      "modelSlot": "M4",
+      "workload": "W6",
+      "arm": "B",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 27,
+      "knownLogicalTokens": 247776,
+      "callsWithKnownLogicalTokens": 27
+    },
+    {
+      "id": "M1-W2-B",
+      "cohort": "pilot",
+      "modelSlot": "M1",
+      "workload": "W2",
+      "arm": "B",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 70,
+      "knownLogicalTokens": 1592997,
+      "callsWithKnownLogicalTokens": 70
+    },
+    {
+      "id": "M1-W2-A",
+      "cohort": "pilot",
+      "modelSlot": "M1",
+      "workload": "W2",
+      "arm": "A",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 50,
+      "knownLogicalTokens": 719149,
+      "callsWithKnownLogicalTokens": 50
+    },
+    {
+      "id": "M1-W4-B",
+      "cohort": "pilot",
+      "modelSlot": "M1",
+      "workload": "W4",
+      "arm": "B",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 50,
+      "knownLogicalTokens": 792925,
+      "callsWithKnownLogicalTokens": 50
+    },
+    {
+      "id": "M1-W4-A",
+      "cohort": "pilot",
+      "modelSlot": "M1",
+      "workload": "W4",
+      "arm": "A",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 50,
+      "knownLogicalTokens": 419060,
+      "callsWithKnownLogicalTokens": 50
+    },
+    {
+      "id": "M1-W5-A",
+      "cohort": "pilot",
+      "modelSlot": "M1",
+      "workload": "W5",
+      "arm": "A",
+      "status": "completed",
+      "acceptance": "accepted-in-result",
+      "forwardedCalls": 31,
+      "knownLogicalTokens": 218255,
+      "callsWithKnownLogicalTokens": 31
+    },
+    {
+      "id": "M1-W5-B",
+      "cohort": "pilot",
+      "modelSlot": "M1",
+      "workload": "W5",
+      "arm": "B",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 69,
+      "knownLogicalTokens": 1999466,
+      "callsWithKnownLogicalTokens": 69
+    },
+    {
+      "id": "M2-W2-A",
+      "cohort": "pilot",
+      "modelSlot": "M2",
+      "workload": "W2",
+      "arm": "A",
+      "status": "unstarted",
+      "acceptance": "provisional-or-unstarted",
+      "forwardedCalls": 0,
+      "knownLogicalTokens": null,
+      "callsWithKnownLogicalTokens": 0
+    },
+    {
+      "id": "M2-W2-B",
+      "cohort": "pilot",
+      "modelSlot": "M2",
+      "workload": "W2",
+      "arm": "B",
+      "status": "unstarted",
+      "acceptance": "provisional-or-unstarted",
+      "forwardedCalls": 0,
+      "knownLogicalTokens": null,
+      "callsWithKnownLogicalTokens": 0
+    },
+    {
+      "id": "M2-W4-A",
+      "cohort": "pilot",
+      "modelSlot": "M2",
+      "workload": "W4",
+      "arm": "A",
+      "status": "unstarted",
+      "acceptance": "provisional-or-unstarted",
+      "forwardedCalls": 0,
+      "knownLogicalTokens": null,
+      "callsWithKnownLogicalTokens": 0
+    },
+    {
+      "id": "M2-W4-B",
+      "cohort": "pilot",
+      "modelSlot": "M2",
+      "workload": "W4",
+      "arm": "B",
+      "status": "unstarted",
+      "acceptance": "provisional-or-unstarted",
+      "forwardedCalls": 0,
+      "knownLogicalTokens": null,
+      "callsWithKnownLogicalTokens": 0
+    },
+    {
+      "id": "M2-W5-B",
+      "cohort": "pilot",
+      "modelSlot": "M2",
+      "workload": "W5",
+      "arm": "B",
+      "status": "unstarted",
+      "acceptance": "provisional-or-unstarted",
+      "forwardedCalls": 0,
+      "knownLogicalTokens": null,
+      "callsWithKnownLogicalTokens": 0
+    },
+    {
+      "id": "M2-W5-A",
+      "cohort": "pilot",
+      "modelSlot": "M2",
+      "workload": "W5",
+      "arm": "A",
+      "status": "unstarted",
+      "acceptance": "provisional-or-unstarted",
+      "forwardedCalls": 0,
+      "knownLogicalTokens": null,
+      "callsWithKnownLogicalTokens": 0
+    },
+    {
+      "id": "M3-W2-B",
+      "cohort": "pilot",
+      "modelSlot": "M3",
+      "workload": "W2",
+      "arm": "B",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 16,
+      "knownLogicalTokens": 209638,
+      "callsWithKnownLogicalTokens": 16
+    },
+    {
+      "id": "M3-W2-A",
+      "cohort": "pilot",
+      "modelSlot": "M3",
+      "workload": "W2",
+      "arm": "A",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 14,
+      "knownLogicalTokens": 154747,
+      "callsWithKnownLogicalTokens": 14
+    },
+    {
+      "id": "M3-W4-B",
+      "cohort": "pilot",
+      "modelSlot": "M3",
+      "workload": "W4",
+      "arm": "B",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 24,
+      "knownLogicalTokens": 269996,
+      "callsWithKnownLogicalTokens": 24
+    },
+    {
+      "id": "M3-W4-A",
+      "cohort": "pilot",
+      "modelSlot": "M3",
+      "workload": "W4",
+      "arm": "A",
+      "status": "completed",
+      "acceptance": "accepted-in-result",
+      "forwardedCalls": 22,
+      "knownLogicalTokens": 211020,
+      "callsWithKnownLogicalTokens": 22
+    },
+    {
+      "id": "M3-W5-A",
+      "cohort": "pilot",
+      "modelSlot": "M3",
+      "workload": "W5",
+      "arm": "A",
+      "status": "completed",
+      "acceptance": "accepted-in-result",
+      "forwardedCalls": 9,
+      "knownLogicalTokens": 102057,
+      "callsWithKnownLogicalTokens": 9
+    },
+    {
+      "id": "M3-W5-B",
+      "cohort": "pilot",
+      "modelSlot": "M3",
+      "workload": "W5",
+      "arm": "B",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 13,
+      "knownLogicalTokens": 217780,
+      "callsWithKnownLogicalTokens": 13
+    },
+    {
+      "id": "M4-W2-A",
+      "cohort": "pilot",
+      "modelSlot": "M4",
+      "workload": "W2",
+      "arm": "A",
+      "status": "completed",
+      "acceptance": "accepted-in-result",
+      "forwardedCalls": 14,
+      "knownLogicalTokens": 112502,
+      "callsWithKnownLogicalTokens": 14
+    },
+    {
+      "id": "M4-W2-B",
+      "cohort": "pilot",
+      "modelSlot": "M4",
+      "workload": "W2",
+      "arm": "B",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 17,
+      "knownLogicalTokens": 93895,
+      "callsWithKnownLogicalTokens": 17
+    },
+    {
+      "id": "M4-W4-A",
+      "cohort": "pilot",
+      "modelSlot": "M4",
+      "workload": "W4",
+      "arm": "A",
+      "status": "completed",
+      "acceptance": "accepted-in-result",
+      "forwardedCalls": 27,
+      "knownLogicalTokens": 177812,
+      "callsWithKnownLogicalTokens": 27
+    },
+    {
+      "id": "M4-W4-B",
+      "cohort": "pilot",
+      "modelSlot": "M4",
+      "workload": "W4",
+      "arm": "B",
+      "status": "completed",
+      "acceptance": "accepted-in-result",
+      "forwardedCalls": 27,
+      "knownLogicalTokens": 226150,
+      "callsWithKnownLogicalTokens": 27
+    },
+    {
+      "id": "M4-W5-B",
+      "cohort": "pilot",
+      "modelSlot": "M4",
+      "workload": "W5",
+      "arm": "B",
+      "status": "completed",
+      "acceptance": "accepted-in-result",
+      "forwardedCalls": 15,
+      "knownLogicalTokens": 81595,
+      "callsWithKnownLogicalTokens": 15
+    },
+    {
+      "id": "M4-W5-A",
+      "cohort": "pilot",
+      "modelSlot": "M4",
+      "workload": "W5",
+      "arm": "A",
+      "status": "completed",
+      "acceptance": "accepted-in-result",
+      "forwardedCalls": 13,
+      "knownLogicalTokens": 62431,
+      "callsWithKnownLogicalTokens": 13
+    },
+    {
+      "id": "M5-W1-A",
+      "cohort": "nemotron",
+      "modelSlot": "M5",
+      "workload": "W1",
+      "arm": "A",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 11,
+      "knownLogicalTokens": 71417,
+      "callsWithKnownLogicalTokens": 11
+    },
+    {
+      "id": "M5-W1-B",
+      "cohort": "nemotron",
+      "modelSlot": "M5",
+      "workload": "W1",
+      "arm": "B",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 39,
+      "knownLogicalTokens": 1018871,
+      "callsWithKnownLogicalTokens": 39
+    },
+    {
+      "id": "M5-W3-A",
+      "cohort": "nemotron",
+      "modelSlot": "M5",
+      "workload": "W3",
+      "arm": "A",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 50,
+      "knownLogicalTokens": 1886732,
+      "callsWithKnownLogicalTokens": 50
+    },
+    {
+      "id": "M5-W3-B",
+      "cohort": "nemotron",
+      "modelSlot": "M5",
+      "workload": "W3",
+      "arm": "B",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 28,
+      "knownLogicalTokens": 791295,
+      "callsWithKnownLogicalTokens": 28
+    },
+    {
+      "id": "M5-W6-B",
+      "cohort": "nemotron",
+      "modelSlot": "M5",
+      "workload": "W6",
+      "arm": "B",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 37,
+      "knownLogicalTokens": 476328,
+      "callsWithKnownLogicalTokens": 37
+    },
+    {
+      "id": "M5-W6-A",
+      "cohort": "nemotron",
+      "modelSlot": "M5",
+      "workload": "W6",
+      "arm": "A",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 55,
+      "knownLogicalTokens": 476868,
+      "callsWithKnownLogicalTokens": 55
+    },
+    {
+      "id": "M5-W2-B",
+      "cohort": "nemotron",
+      "modelSlot": "M5",
+      "workload": "W2",
+      "arm": "B",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 17,
+      "knownLogicalTokens": 159325,
+      "callsWithKnownLogicalTokens": 17
+    },
+    {
+      "id": "M5-W2-A",
+      "cohort": "nemotron",
+      "modelSlot": "M5",
+      "workload": "W2",
+      "arm": "A",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 29,
+      "knownLogicalTokens": 271357,
+      "callsWithKnownLogicalTokens": 29
+    },
+    {
+      "id": "M5-W4-B",
+      "cohort": "nemotron",
+      "modelSlot": "M5",
+      "workload": "W4",
+      "arm": "B",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 46,
+      "knownLogicalTokens": 645963,
+      "callsWithKnownLogicalTokens": 46
+    },
+    {
+      "id": "M5-W4-A",
+      "cohort": "nemotron",
+      "modelSlot": "M5",
+      "workload": "W4",
+      "arm": "A",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 50,
+      "knownLogicalTokens": 576126,
+      "callsWithKnownLogicalTokens": 50
+    },
+    {
+      "id": "M5-W5-A",
+      "cohort": "nemotron",
+      "modelSlot": "M5",
+      "workload": "W5",
+      "arm": "A",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 15,
+      "knownLogicalTokens": 170304,
+      "callsWithKnownLogicalTokens": 15
+    },
+    {
+      "id": "M5-W5-B",
+      "cohort": "nemotron",
+      "modelSlot": "M5",
+      "workload": "W5",
+      "arm": "B",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 15,
+      "knownLogicalTokens": 163137,
+      "callsWithKnownLogicalTokens": 15
+    },
+    {
+      "id": "M6-W1-B",
+      "cohort": "gemini",
+      "modelSlot": "M6",
+      "workload": "W1",
+      "arm": "B",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 40,
+      "knownLogicalTokens": 512747,
+      "callsWithKnownLogicalTokens": 40
+    },
+    {
+      "id": "M6-W1-A",
+      "cohort": "gemini",
+      "modelSlot": "M6",
+      "workload": "W1",
+      "arm": "A",
+      "status": "completed",
+      "acceptance": "accepted-in-result",
+      "forwardedCalls": 38,
+      "knownLogicalTokens": 728434,
+      "callsWithKnownLogicalTokens": 38
+    },
+    {
+      "id": "M6-W6-A",
+      "cohort": "gemini",
+      "modelSlot": "M6",
+      "workload": "W6",
+      "arm": "A",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 28,
+      "knownLogicalTokens": 851839,
+      "callsWithKnownLogicalTokens": 28
+    },
+    {
+      "id": "M6-W6-B",
+      "cohort": "gemini",
+      "modelSlot": "M6",
+      "workload": "W6",
+      "arm": "B",
+      "status": "completed",
+      "acceptance": "failed-in-result",
+      "forwardedCalls": 29,
+      "knownLogicalTokens": 795276,
+      "callsWithKnownLogicalTokens": 29
+    }
+  ],
+  "offline": {
+    "sessions": 29,
+    "prefixes": 1668,
+    "liveGatePassed": false,
+    "policy": {
+      "chunkTokens": 20000,
+      "keepTokens": 20000
+    },
+    "tokenizer": "gpt-tokenizer@4.0.0/o200k_base visible JSON proxy; not provider tokens",
+    "cells": [
+      {
+        "id": "M1-W1-A",
+        "prefixes": 34,
+        "reduction": 0
+      },
+      {
+        "id": "M1-W3-A",
+        "prefixes": 113,
+        "reduction": 0
+      },
+      {
+        "id": "M1-W6-A",
+        "prefixes": 98,
+        "reduction": 0
+      },
+      {
+        "id": "M2-W1-A",
+        "prefixes": 5,
+        "reduction": 0
+      },
+      {
+        "id": "M2-W3-A",
+        "prefixes": 5,
+        "reduction": 0
+      },
+      {
+        "id": "M2-W6-A",
+        "prefixes": 5,
+        "reduction": 0
+      },
+      {
+        "id": "M3-W1-A",
+        "prefixes": 27,
+        "reduction": 0
+      },
+      {
+        "id": "M3-W3-A",
+        "prefixes": 53,
+        "reduction": 0
+      },
+      {
+        "id": "M3-W6-A",
+        "prefixes": 69,
+        "reduction": 0
+      },
+      {
+        "id": "M4-W1-A",
+        "prefixes": 15,
+        "reduction": 0
+      },
+      {
+        "id": "M4-W3-A",
+        "prefixes": 34,
+        "reduction": 0
+      },
+      {
+        "id": "M4-W6-A",
+        "prefixes": 66,
+        "reduction": 0
+      },
+      {
+        "id": "M1-W2-A",
+        "prefixes": 103,
+        "reduction": 0
+      },
+      {
+        "id": "M1-W4-A",
+        "prefixes": 108,
+        "reduction": 0
+      },
+      {
+        "id": "M1-W5-A",
+        "prefixes": 65,
+        "reduction": 0
+      },
+      {
+        "id": "M3-W2-A",
+        "prefixes": 46,
+        "reduction": 0
+      },
+      {
+        "id": "M3-W4-A",
+        "prefixes": 65,
+        "reduction": 0
+      },
+      {
+        "id": "M3-W5-A",
+        "prefixes": 31,
+        "reduction": 0
+      },
+      {
+        "id": "M4-W2-A",
+        "prefixes": 36,
+        "reduction": 0
+      },
+      {
+        "id": "M4-W4-A",
+        "prefixes": 73,
+        "reduction": 0
+      },
+      {
+        "id": "M4-W5-A",
+        "prefixes": 31,
+        "reduction": 0
+      },
+      {
+        "id": "M5-W1-A",
+        "prefixes": 25,
+        "reduction": 0
+      },
+      {
+        "id": "M5-W3-A",
+        "prefixes": 106,
+        "reduction": 0
+      },
+      {
+        "id": "M5-W6-A",
+        "prefixes": 114,
+        "reduction": 0
+      },
+      {
+        "id": "M5-W2-A",
+        "prefixes": 61,
+        "reduction": 0
+      },
+      {
+        "id": "M5-W4-A",
+        "prefixes": 105,
+        "reduction": 0
+      },
+      {
+        "id": "M5-W5-A",
+        "prefixes": 35,
+        "reduction": 0
+      },
+      {
+        "id": "M6-W1-A",
+        "prefixes": 79,
+        "reduction": 0
+      },
+      {
+        "id": "M6-W6-A",
+        "prefixes": 61,
+        "reduction": 0
+      }
+    ],
+    "opportunities": [
+      {
+        "id": "M1-W1-A",
+        "growthProxyTokens": 10519,
+        "reads": 3,
+        "full": 2,
+        "identicalFullRepeatsIgnoringRecency": 0
+      },
+      {
+        "id": "M1-W3-A",
+        "growthProxyTokens": 40002,
+        "reads": 4,
+        "full": 1,
+        "identicalFullRepeatsIgnoringRecency": 0
+      },
+      {
+        "id": "M1-W6-A",
+        "growthProxyTokens": 45398,
+        "reads": 7,
+        "full": 6,
+        "identicalFullRepeatsIgnoringRecency": 1
+      },
+      {
+        "id": "M2-W1-A",
+        "growthProxyTokens": 427,
+        "reads": 0,
+        "full": 0,
+        "identicalFullRepeatsIgnoringRecency": 0
+      },
+      {
+        "id": "M2-W3-A",
+        "growthProxyTokens": 132,
+        "reads": 0,
+        "full": 0,
+        "identicalFullRepeatsIgnoringRecency": 0
+      },
+      {
+        "id": "M2-W6-A",
+        "growthProxyTokens": 125,
+        "reads": 0,
+        "full": 0,
+        "identicalFullRepeatsIgnoringRecency": 0
+      },
+      {
+        "id": "M3-W1-A",
+        "growthProxyTokens": 9453,
+        "reads": 2,
+        "full": 0,
+        "identicalFullRepeatsIgnoringRecency": 0
+      },
+      {
+        "id": "M3-W3-A",
+        "growthProxyTokens": 26203,
+        "reads": 8,
+        "full": 0,
+        "identicalFullRepeatsIgnoringRecency": 0
+      },
+      {
+        "id": "M3-W6-A",
+        "growthProxyTokens": 20739,
+        "reads": 19,
+        "full": 18,
+        "identicalFullRepeatsIgnoringRecency": 2
+      },
+      {
+        "id": "M4-W1-A",
+        "growthProxyTokens": 6247,
+        "reads": 2,
+        "full": 2,
+        "identicalFullRepeatsIgnoringRecency": 0
+      },
+      {
+        "id": "M4-W3-A",
+        "growthProxyTokens": 13571,
+        "reads": 4,
+        "full": 0,
+        "identicalFullRepeatsIgnoringRecency": 0
+      },
+      {
+        "id": "M4-W6-A",
+        "growthProxyTokens": 22427,
+        "reads": 16,
+        "full": 16,
+        "identicalFullRepeatsIgnoringRecency": 4
+      },
+      {
+        "id": "M1-W2-A",
+        "growthProxyTokens": 24080,
+        "reads": 13,
+        "full": 1,
+        "identicalFullRepeatsIgnoringRecency": 0
+      },
+      {
+        "id": "M1-W4-A",
+        "growthProxyTokens": 15320,
+        "reads": 4,
+        "full": 4,
+        "identicalFullRepeatsIgnoringRecency": 0
+      },
+      {
+        "id": "M1-W5-A",
+        "growthProxyTokens": 12916,
+        "reads": 2,
+        "full": 0,
+        "identicalFullRepeatsIgnoringRecency": 0
+      },
+      {
+        "id": "M3-W2-A",
+        "growthProxyTokens": 19065,
+        "reads": 9,
+        "full": 0,
+        "identicalFullRepeatsIgnoringRecency": 0
+      },
+      {
+        "id": "M3-W4-A",
+        "growthProxyTokens": 18625,
+        "reads": 13,
+        "full": 13,
+        "identicalFullRepeatsIgnoringRecency": 0
+      },
+      {
+        "id": "M3-W5-A",
+        "growthProxyTokens": 18815,
+        "reads": 5,
+        "full": 0,
+        "identicalFullRepeatsIgnoringRecency": 0
+      },
+      {
+        "id": "M4-W2-A",
+        "growthProxyTokens": 13242,
+        "reads": 8,
+        "full": 1,
+        "identicalFullRepeatsIgnoringRecency": 0
+      },
+      {
+        "id": "M4-W4-A",
+        "growthProxyTokens": 18766,
+        "reads": 17,
+        "full": 15,
+        "identicalFullRepeatsIgnoringRecency": 1
+      },
+      {
+        "id": "M4-W5-A",
+        "growthProxyTokens": 9262,
+        "reads": 4,
+        "full": 0,
+        "identicalFullRepeatsIgnoringRecency": 0
+      },
+      {
+        "id": "M5-W1-A",
+        "growthProxyTokens": 8653,
+        "reads": 1,
+        "full": 1,
+        "identicalFullRepeatsIgnoringRecency": 0
+      },
+      {
+        "id": "M5-W3-A",
+        "growthProxyTokens": 54428,
+        "reads": 3,
+        "full": 2,
+        "identicalFullRepeatsIgnoringRecency": 0
+      },
+      {
+        "id": "M5-W6-A",
+        "growthProxyTokens": 23185,
+        "reads": 16,
+        "full": 13,
+        "identicalFullRepeatsIgnoringRecency": 5
+      },
+      {
+        "id": "M5-W2-A",
+        "growthProxyTokens": 16188,
+        "reads": 4,
+        "full": 1,
+        "identicalFullRepeatsIgnoringRecency": 0
+      },
+      {
+        "id": "M5-W4-A",
+        "growthProxyTokens": 26010,
+        "reads": 15,
+        "full": 14,
+        "identicalFullRepeatsIgnoringRecency": 5
+      },
+      {
+        "id": "M5-W5-A",
+        "growthProxyTokens": 19365,
+        "reads": 1,
+        "full": 1,
+        "identicalFullRepeatsIgnoringRecency": 0
+      },
+      {
+        "id": "M6-W1-A",
+        "growthProxyTokens": 41125,
+        "reads": 12,
+        "full": 0,
+        "identicalFullRepeatsIgnoringRecency": 0
+      },
+      {
+        "id": "M6-W6-A",
+        "growthProxyTokens": 60393,
+        "reads": 4,
+        "full": 3,
+        "identicalFullRepeatsIgnoringRecency": 0
+      }
+    ]
+  }
+}

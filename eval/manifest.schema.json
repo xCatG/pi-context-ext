@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pi-context-ext.invalid/eval/manifest.schema.json",
+  "title": "Finite pilot frozen input schema (C qualification still blocks launch)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "frozen", "identity", "model", "inventories", "retryPolicy", "aggregateBudget", "calibration", "tasks", "assignments", "failureRules", "qualification", "gradingIsolation", "machineLoad"],
+  "properties": {
+    "protocol": { "const": "2026-09-11" },
+    "frozen": { "const": true },
+    "identity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["packageVersion", "packageIntegrity", "extensionCommit", "dependencyLockDigest", "osImage"],
+      "properties": {
+        "packageVersion": { "const": "0.85.1" },
+        "packageIntegrity": { "type": "string", "pattern": "^sha512-[A-Za-z0-9+/]{86}==$" },
+        "extensionCommit": { "$ref": "#/$defs/commit" },
+        "dependencyLockDigest": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "osImage": { "$ref": "#/$defs/text" }
+      }
+    },
+    "model": {
+      "type": "object", "additionalProperties": false,
+      "required": ["provider", "name", "version", "sampling", "reasoning", "outputLimit", "contextLimit", "summaryUsesAttemptModel"],
+      "properties": {
+        "provider": { "$ref": "#/$defs/text" }, "name": { "$ref": "#/$defs/text" }, "version": { "$ref": "#/$defs/text" },
+        "sampling": { "$ref": "#/$defs/text" }, "reasoning": { "$ref": "#/$defs/text" },
+        "outputLimit": { "$ref": "#/$defs/positive" }, "contextLimit": { "$ref": "#/$defs/positive" },
+        "summaryUsesAttemptModel": { "const": true }
+      }
+    },
+    "inventories": {
+      "type": "object", "additionalProperties": false, "required": ["A", "B", "C"],
+      "properties": { "A": { "$ref": "#/$defs/inventory" }, "B": { "$ref": "#/$defs/inventory" }, "C": { "$ref": "#/$defs/inventory" } }
+    },
+    "retryPolicy": { "$ref": "#/$defs/artifact" },
+    "aggregateBudget": {
+      "type": "object", "additionalProperties": false, "required": ["costCeiling", "currency", "wallMs"],
+      "properties": { "costCeiling": { "type": "number", "minimum": 0 }, "currency": { "$ref": "#/$defs/text" }, "wallMs": { "$ref": "#/$defs/positive" } }
+    },
+    "calibration": {
+      "type": "object", "additionalProperties": false,
+      "required": ["authorization", "calls", "slowestCallMs", "longInputCovered", "requestDeadlineMs", "compactionDeadlineMs", "evidence"],
+      "properties": {
+        "authorization": { "$ref": "#/$defs/text" }, "calls": { "type": "integer", "minimum": 1, "maximum": 3 },
+        "slowestCallMs": { "$ref": "#/$defs/positive" }, "longInputCovered": { "const": true },
+        "requestDeadlineMs": { "type": "integer", "minimum": 300000 }, "compactionDeadlineMs": { "type": "integer", "minimum": 300000 },
+        "evidence": { "$ref": "#/$defs/artifact" }
+      }
+    },
+    "tasks": { "type": "array", "minItems": 6, "maxItems": 6, "items": { "$ref": "#/$defs/task" } },
+    "assignments": {
+      "type": "array", "minItems": 36, "maxItems": 36,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["taskId", "arm", "repeat"],
+        "properties": { "taskId": { "$ref": "#/$defs/text" }, "arm": { "enum": ["A", "B", "C"] }, "repeat": { "enum": [1, 2] } }
+      }
+    },
+    "failureRules": {
+      "type": "object", "additionalProperties": false,
+      "required": ["oneAttemptPerCell", "retriesConsumeBudget", "retainAllFailures", "capacityBlockedTerminal", "noUnscriptedIntervention", "stopOnOutageOrAggregateCap", "resumeRequiresAuthorization", "changedInputsRequireNewProtocol", "serial"],
+      "properties": {
+        "oneAttemptPerCell": { "const": true }, "retriesConsumeBudget": { "const": true }, "retainAllFailures": { "const": true },
+        "capacityBlockedTerminal": { "const": true }, "noUnscriptedIntervention": { "const": true }, "stopOnOutageOrAggregateCap": { "const": true },
+        "resumeRequiresAuthorization": { "const": true }, "changedInputsRequireNewProtocol": { "const": true }, "serial": { "const": true }
+      }
+    },
+    "qualification": {
+      "type": "object", "additionalProperties": false, "required": ["A", "B", "C"],
+      "properties": { "A": { "$ref": "#/$defs/artifact" }, "B": { "$ref": "#/$defs/artifact" }, "C": { "$ref": "#/$defs/artifact" } }
+    },
+    "gradingIsolation": { "$ref": "#/$defs/artifact" }, "machineLoad": { "$ref": "#/$defs/text" }
+  },
+  "$defs": {
+    "commit": { "type": "string", "pattern": "^([a-f0-9]{40}|[a-f0-9]{64})$" },
+    "text": { "type": "string", "minLength": 1, "pattern": "\\S" },
+    "positive": { "type": "integer", "minimum": 1 },
+    "artifact": {
+      "type": "object", "additionalProperties": false, "required": ["location", "sha256"],
+      "properties": { "location": { "$ref": "#/$defs/text" }, "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" } }
+    },
+    "inventory": {
+      "type": "object", "additionalProperties": false, "required": ["prompts", "tools", "noOtherPlugins"],
+      "properties": { "prompts": { "$ref": "#/$defs/artifact" }, "tools": { "$ref": "#/$defs/artifact" }, "noOtherPlugins": { "const": true } }
+    },
+    "task": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "slot", "stratum", "origin", "repository", "baseCommit", "snapshot", "issueText", "acceptance", "knownGoodEvidence", "scriptedMessages", "transitions", "expectedOpportunity", "budget", "constraints", "forbiddenScope", "authentic", "noFiller", "noRahArtifacts", "goldInaccessible"],
+      "properties": {
+        "id": { "$ref": "#/$defs/text" }, "slot": { "type": "integer", "minimum": 1, "maximum": 6 }, "stratum": { "enum": ["short", "long"] },
+        "origin": { "$ref": "#/$defs/text" }, "repository": { "$ref": "#/$defs/text" }, "baseCommit": { "$ref": "#/$defs/commit" },
+        "snapshot": { "$ref": "#/$defs/artifact" }, "issueText": { "$ref": "#/$defs/artifact" },
+        "acceptance": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["command", "fixture", "baseResult", "knownGoodResult"],
+            "properties": { "command": { "$ref": "#/$defs/text" }, "fixture": { "$ref": "#/$defs/artifact" }, "baseResult": { "$ref": "#/$defs/artifact" }, "knownGoodResult": { "$ref": "#/$defs/artifact" } }
+          }
+        },
+        "knownGoodEvidence": { "$ref": "#/$defs/artifact" }, "scriptedMessages": { "$ref": "#/$defs/artifact" },
+        "transitions": {
+          "type": "array", "items": {
+            "type": "object", "additionalProperties": false, "required": ["ordinal", "kind", "instructions"],
+            "properties": { "ordinal": { "$ref": "#/$defs/positive" }, "kind": { "enum": ["tree-fork", "external-patch", "factual-correction", "persisted-restart"] }, "instructions": { "$ref": "#/$defs/artifact" } }
+          }
+        },
+        "expectedOpportunity": { "$ref": "#/$defs/text" }, "constraints": { "$ref": "#/$defs/artifact" }, "forbiddenScope": { "$ref": "#/$defs/artifact" },
+        "budget": {
+          "type": "object", "additionalProperties": false, "required": ["tokens", "calls", "wallMs"],
+          "properties": { "tokens": { "$ref": "#/$defs/positive" }, "calls": { "$ref": "#/$defs/positive" }, "wallMs": { "$ref": "#/$defs/positive" } }
+        },
+        "authentic": { "const": true }, "noFiller": { "const": true }, "noRahArtifacts": { "const": true }, "goldInaccessible": { "const": true }
+      }
+    }
+  }
+}

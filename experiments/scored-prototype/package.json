@@ -1,0 +1,42 @@
+{
+  "name": "pi-context-ext",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Organized context and exact evidence recall for Pi, with native compaction timing",
+  "pi": {
+    "extensions": [
+      "./src/index.ts"
+    ]
+  },
+  "files": [
+    "src",
+    "eval",
+    "docs",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run test && npm run typecheck"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-ai": "0.85.1",
+    "@earendil-works/pi-coding-agent": "0.85.1"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-ai": "0.85.1",
+    "@earendil-works/pi-coding-agent": "0.85.1",
+    "@types/node": "22.19.0",
+    "typescript": "5.9.3",
+    "vitest": "4.1.9"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xCatG/pi-context-ext.git"
+  }
+}

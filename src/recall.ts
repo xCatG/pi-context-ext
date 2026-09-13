@@ -11,23 +11,11 @@ export interface RecallContext {
 export interface RecallRequest {
     scope?: 'active' | 'historical';
     entryIds?: string[];
-    /** Literal case-sensitive substring of native text; omitted/empty matches all supported text. */
     query?: string;
     cursor?: string;
     maxBytes?: number;
 }
-export interface RecallMatchSummary {
-    mode: 'all-text' | 'literal-case-sensitive-substring';
-    status: 'matched' | 'no-text-matches' | 'no-text-available';
-    /** Totals for the frozen snapshot, not just this page; counts entries, not occurrences. */
-    scannedTextEntries: number;
-    matchedTextEntries: number;
-    /** Independent of query matches; may overlap mixed text/nontext entries. */
-    unavailableEntries: number;
-}
 export interface RecallResult {
-    /** Fixed-size metadata: does not echo the query or enumerate matching identifiers. */
-    matchSummary: RecallMatchSummary;
     provenance: {
         sessionId: string;
         scope: 'active' | 'historical';
@@ -52,7 +40,6 @@ interface Snapshot {
     ancestry: string[];
     key: string;
     scope: 'active' | 'historical';
-    matchSummary: RecallMatchSummary;
     entries: {
         id: string;
         text: string;
@@ -113,17 +100,14 @@ export class NativeRecall {
         else {
             const available = scope === 'historical' ? (context.allEntries ?? context.activeEntries) : context.activeEntries;
             const byId = new Map(available.map(entry => [entry.id, entry]));
-            const requestedIds = request.entryIds ? [...new Set(request.entryIds)] : undefined;
-            const selected = requestedIds ? requestedIds.flatMap(id => byId.has(id) ? [byId.get(id)!] : []) : available;
-            const unavailable = requestedIds?.filter(id => !byId.has(id)) ?? [];
+            const selected = request.entryIds ? request.entryIds.flatMap(id => byId.has(id) ? [byId.get(id)!] : []) : available;
+            const unavailable = request.entryIds?.filter(id => !byId.has(id)) ?? [];
             const entries: Snapshot['entries'] = [];
-            let scannedTextEntries = 0;
             for (const entry of selected) {
                 const support = textSupport(entry);
                 if (!support.supported || support.nontext)
                     unavailable.push(entry.id);
                 if (support.supported) {
-                    scannedTextEntries++;
                     const text = nativeEntryText(entry);
                     if (!request.query || text.includes(request.query))
                         entries.push({ id: entry.id, text });
@@ -135,18 +119,12 @@ export class NativeRecall {
                     sessionId: context.sessionId, generation: context.generation, key, scope,
                     leaf: context.activeEntries.at(-1)?.id ?? null,
                     ancestry: context.activeEntries.map(entry => entry.id), entries, unavailable,
-                    matchSummary: {
-                        mode: request.query ? 'literal-case-sensitive-substring' : 'all-text',
-                        status: entries.length ? 'matched' : scannedTextEntries ? 'no-text-matches' : 'no-text-available',
-                        scannedTextEntries, matchedTextEntries: entries.length, unavailableEntries: unavailable.length,
-                    },
                 },
             };
         }
         const snapshot = position.snapshot;
         // Reserve a fixed-size continuation token even for a final page.
         const result: RecallResult = {
-            matchSummary: { ...snapshot.matchSummary },
             provenance: {
                 sessionId: snapshot.sessionId, scope: snapshot.scope, authority: 'source-data',
                 representation: 'text-blocks-only', snapshotLeaf: snapshot.leaf,
@@ -155,7 +133,14 @@ export class NativeRecall {
         };
         if (jsonBytes(result) > maxBytes)
             throw new Error('Recall provenance exceeds maxBytes; increase the budget');
-        // Prioritize exact matching evidence over potentially large unavailable-ID lists.
+        while (position.unavailableIndex < snapshot.unavailable.length) {
+            result.unavailable.push(snapshot.unavailable[position.unavailableIndex]);
+            if (jsonBytes(result) > maxBytes) {
+                result.unavailable.pop();
+                break;
+            }
+            position.unavailableIndex++;
+        }
         while (position.index < snapshot.entries.length && result.fragments.length < 128) {
             const entry = snapshot.entries[position.index];
             const bytes = Buffer.from(entry.text, 'utf8');
@@ -191,14 +176,6 @@ export class NativeRecall {
             else {
                 break;
             }
-        }
-        while (position.unavailableIndex < snapshot.unavailable.length) {
-            result.unavailable.push(snapshot.unavailable[position.unavailableIndex]);
-            if (jsonBytes(result) > maxBytes) {
-                result.unavailable.pop();
-                break;
-            }
-            position.unavailableIndex++;
         }
         const more = position.index < snapshot.entries.length || position.unavailableIndex < snapshot.unavailable.length;
         if (more) {

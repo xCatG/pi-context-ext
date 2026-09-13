@@ -23,17 +23,12 @@ export type Projection = { status: 'ready'; text: string; estimatedTokens: numbe
 export const sizeEstimate = (value: unknown): number => Buffer.byteLength(
   typeof value === 'string' ? value : JSON.stringify(value), 'utf8');
 
-export function project(state: RebuiltState, budget: Budget, measureText: (text: string) => number = sizeEstimate): Projection {
+export function project(state: RebuiltState, budget: Budget): Projection {
   const sources = state.records.filter(r => r.kind === 'user_source');
   const considered = new Set<string>();
   for (const r of state.records) if (r.kind === 'lifecycle' && r.data.event === 'checkpoint') {
     const ids = r.data.details?.consideredIds;
-    if (Array.isArray(ids)) for (const id of ids) if (typeof id === 'string') {
-      // Receipts retain raw request IDs for authenticated replay/idempotency.
-      // Resolve only captured active user sources, never arbitrary record anchors.
-      const source = sources.find(r => r.id === id || r.data.entryId === id);
-      if (source) considered.add(source.data.entryId);
-    }
+    if (Array.isArray(ids)) for (const id of ids) if (typeof id === 'string') considered.add(id);
   }
   const pins = state.records.filter(r => r.kind === 'intent' && r.data.pinned && r.data.author === 'user' && !state.conflictIds.includes(r.id));
   const pinSources = new Set(pins.map(r => r.kind === 'intent' ? r.data.sourceId : ''));
@@ -60,21 +55,15 @@ export function project(state: RebuiltState, budget: Budget, measureText: (text:
   if (!Object.values(budget).every(n => Number.isFinite(n) && n >= 0) || headroom < 0)
     return { status: 'blocked', mandatoryIds, reason: 'Unknown or insufficient request headroom' };
   let text = envelope();
-  let measured = measureText(text);
-  if (!Number.isFinite(measured) || measured < 0)
-    return { status: 'blocked', mandatoryIds, reason: 'Invalid projection cost estimate' };
-  if (measured > headroom)
+  if (sizeEstimate(text) > headroom)
     return { status: 'blocked', mandatoryIds, reason: 'Mandatory context and omission manifest exceed request headroom' };
   for (const record of optional) {
     selected.push(record);
     const candidate = envelope();
-    const cost = measureText(candidate);
-    if (!Number.isFinite(cost) || cost < 0)
-      return { status: 'blocked', mandatoryIds, reason: 'Invalid projection cost estimate' };
-    if (cost <= Math.min(headroom, budget.softTarget)) { text = candidate; measured = cost; }
+    if (sizeEstimate(candidate) <= Math.min(headroom, budget.softTarget)) text = candidate;
     else selected.pop();
   }
-  return { status: 'ready', text, estimatedTokens: measured, mandatoryIds,
+  return { status: 'ready', text, estimatedTokens: sizeEstimate(text), mandatoryIds,
     omittedIds: optional.filter(r => !selected.includes(r)).map(r => r.id) };
 }
 

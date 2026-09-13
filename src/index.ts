@@ -1,5 +1,5 @@
 import { createHash, randomUUID } from 'node:crypto';
-import { type ExtensionAPI, type ExtensionContext, type SessionEntry } from '@earendil-works/pi-coding-agent';
+import { convertToLlm, type ExtensionAPI, type ExtensionContext, type SessionEntry } from '@earendil-works/pi-coding-agent';
 import { Type } from '@earendil-works/pi-ai';
 import { canonical, rebuild, validateRecord, type Mode, type RecordEnvelope } from './records.ts';
 import { captureEntries, deriveObservationKey, nativeEntryText } from './capture.ts';
@@ -7,8 +7,6 @@ import { NativeRecall } from './recall.ts';
 import { compareSpan } from './freshness.ts';
 import { normalizePiUsage } from './metrics.ts';
 import { GUIDANCE, project, sizeEstimate, transformMessages, PROJECTION_TYPE } from './projection.ts';
-import { ADMISSION_ADAPTER, estimateRequestMessages } from './admission.ts';
-import { buildInspectorLines, showInspector } from './inspector.ts';
 
 export const RECORD_TYPE = 'pi-context-ext/records/v1';
 const TOOL_NAMES = ['context_checkpoint', 'context_recall'];
@@ -23,15 +21,13 @@ function result(details: unknown, isError = false) {
 const revisionFields = { supersedes: Type.Optional(Type.String({ description: 'Active record ID being replaced' })),
   reason: Type.Optional(Type.String({ description: 'Reason for the correction; required with supersedes' })) };
 const claimSchema = Type.Object({ text: Type.String(), status: Type.Union([
-  Type.Literal('hypothesis'), Type.Literal('conclusion'), Type.Literal('uncertain')], { description: 'Use hypothesis for a tentative diagnosis, conclusion for your supported interpretation, uncertain for unresolved evidence. Never means independently verified.' }),
+  Type.Literal('hypothesis'), Type.Literal('conclusion'), Type.Literal('uncertain')]),
   evidenceIds: Type.Array(Type.String({ description: 'Active observation/user-source record ID or native entry ID' })),
-  counterEvidenceIds: Type.Array(Type.String(), { description: 'Active evidence record/native entry IDs against the claim; explicitly use [] when none identified.' }), ...revisionFields }, { additionalProperties: false });
+  counterEvidenceIds: Type.Array(Type.String()), ...revisionFields }, { additionalProperties: false });
 const workSchema = Type.Object({ text: Type.String(), status: Type.Union([
-  Type.Literal('open'), Type.Literal('done'), Type.Literal('withdrawn')], { description: 'Use open for pending work, done for completed work, withdrawn for intentionally cancelled work. Corrections use supersedes plus reason.' }), ...revisionFields }, { additionalProperties: false });
+  Type.Literal('open'), Type.Literal('done'), Type.Literal('withdrawn')]), ...revisionFields }, { additionalProperties: false });
 const intentSchema = Type.Object({ text: Type.String({ description: 'Proposed interpretation, not an exact quote or approval' }),
-  sourceId: Type.String({ description: 'Active user-source record ID or native user entry ID being interpreted.' }),
-  author: Type.Literal('model', { description: 'Always model: this tool cannot author user instructions or approval.' }),
-  pinned: Type.Literal(false, { description: 'Always false: only the user command can pin exact user source.' }) }, { additionalProperties: false });
+  sourceId: Type.String(), author: Type.Literal('model'), pinned: Type.Literal(false) }, { additionalProperties: false });
 
 /** Standalone public Pi extension. Native tools and compaction policy are untouched. */
 export default function contextExtension(pi: ExtensionAPI) {
@@ -39,8 +35,6 @@ export default function contextExtension(pi: ExtensionAPI) {
   let generation = 0;
   let omitted: string[] = [];
   let lastBudget: unknown;
-  let lastProjection: { leafId: string | null; requestId: string | undefined } | undefined;
-  const clearProjection = () => { omitted = []; lastBudget = undefined; lastProjection = undefined; };
   const recalled = new Set<string>();
   const recall = new NativeRecall();
   const toolStarts = new Map<string, number>();
@@ -69,7 +63,7 @@ export default function contextExtension(pi: ExtensionAPI) {
     const at = anchor(branch(ctx));
     if (at) append([record(randomUUID(), at, 'lifecycle', { event, details })]);
   }
-  function sync(ctx: ExtensionContext, persist = true) {
+  function sync(ctx: ExtensionContext) {
     let entries = branch(ctx);
     const raw = rawRecords(entries);
     const captured = captureEntries(ctx.sessionManager.getSessionId(), entries);
@@ -91,12 +85,10 @@ export default function contextExtension(pi: ExtensionAPI) {
       return r.kind === 'observation' && derived.kind === 'observation' &&
         hash({ ...r.data, sourceSessionId: '' }) === hash({ ...derived.data, sourceSessionId: '' });
     };
-    const missingCapture = captured.filter(r => !(rawByAnchor.get(r.anchor) ?? []).some(old => authentic(old, r)));
-    if (persist) append(missingCapture);
+    append(captured.filter(r => !(rawByAnchor.get(r.anchor) ?? []).some(old => authentic(old, r))));
     entries = branch(ctx);
     const nativeById = new Map(entries.map(e => [e.id, e]));
     const all = rawRecords(entries);
-    if (!persist) all.push(...missingCapture);
     const usageEntries = entries.filter(e => e.type === 'compaction' || (e.type === 'message' && e.message.role === 'assistant'));
     const makeUsageIdentity = (entry: SessionEntry) => {
       if (entry.type === 'message' && entry.message.role === 'assistant') {
@@ -126,11 +118,11 @@ export default function contextExtension(pi: ExtensionAPI) {
       const times = message ? completedTiming.get(hash(message)) : undefined;
       accounting.push(record(`usage:${entry.id}`, entry.id, 'lifecycle', { event: 'usage', details: {
         ...usageIdentity(entry), ...(message ? { model: message.model, provider: message.provider } : {}),
-        wallMs: (persist ? times?.shift() : times?.[0]) ?? null, billedCost: null,
+        wallMs: times?.shift() ?? null, billedCost: null,
       } }));
-      if (persist && message && !times?.length) completedTiming.delete(hash(message));
+      if (message && !times?.length) completedTiming.delete(hash(message));
     }
-    if (persist) append(accounting);
+    append(accounting);
     all.push(...accounting);
     // Raw native text, not a persisted model-authored record, authenticates user indexes.
     const checked = all.map(r => {
@@ -175,7 +167,7 @@ export default function contextExtension(pi: ExtensionAPI) {
       const previous = previousReads.get(r.data.path);
       const entry = nativeById.get(r.data.entryId);
       const id = `read-comparison:${r.id}`;
-      if (persist && previous && entry && !r.data.partial && r.data.outcome === 'success' && !stateIds.has(id)) {
+      if (previous && entry && !r.data.partial && r.data.outcome === 'success' && !stateIds.has(id)) {
         append([record(id, r.anchor, 'lifecycle', { event: 'freshness-comparison', details: {
           previousId: previous.id, currentId: r.id, freshness: compareSpan(previous.data, nativeEntryText(entry)),
           note: 'Comparison at this native read only; later filesystem currency remains unknown',
@@ -198,7 +190,7 @@ export default function contextExtension(pi: ExtensionAPI) {
   }
   function restore(ctx: ExtensionContext) {
     generation++;
-    recalled.clear(); toolStarts.clear(); completedTiming.clear(); turnStarted = undefined; compactionStarted = undefined; clearProjection();
+    recalled.clear(); toolStarts.clear(); completedTiming.clear(); turnStarted = undefined; compactionStarted = undefined; omitted = [];
     const records = rawRecords(branch(ctx));
     const saved = records.filter(object).findLast(r => r.kind === 'lifecycle' && object(r.data) && r.data.event === 'mode');
     const parsedMode = validateRecord(saved);
@@ -215,7 +207,6 @@ export default function contextExtension(pi: ExtensionAPI) {
   pi.on('session_before_compact', () => { compactionStarted = performance.now(); });
   pi.on('session_compact', (event, ctx) => {
     recalled.clear();
-    clearProjection();
     if (mode === 'organized') {
       append([record(`usage:${event.compactionEntry.id}`, event.compactionEntry.id, 'lifecycle', { event: 'usage', details: {
         operationId: event.compactionEntry.id, category: 'native-compaction', status: 'succeeded',
@@ -265,24 +256,20 @@ export default function contextExtension(pi: ExtensionAPI) {
     const tools = pi.getAllTools().filter(t => pi.getActiveTools().includes(t.name));
     const budget = { window: ctx.model?.contextWindow ?? 0,
       // Include summary wrapping and the projection message envelope before selection.
-      nativeTokens: estimateRequestMessages(transformMessages(native, '')),
+      nativeTokens: sizeEstimate(convertToLlm(transformMessages(native, ''))),
       fixedTokens: sizeEstimate(ctx.getSystemPrompt()) + sizeEstimate(tools),
       outputReserve: ctx.model?.maxTokens ?? 0,
       safetyMargin: Math.max(1024, Math.ceil((ctx.model?.contextWindow ?? 0) * .05)), softTarget: 2000 };
     lastBudget = budget;
-    lastProjection = undefined;
-    const emptyProjectionEstimate = estimateRequestMessages(transformMessages([], ''));
-    const projectionCost = (text: string) => estimateRequestMessages(transformMessages([], text)) - emptyProjectionEstimate;
-    let projection = project(state, budget, projectionCost);
-    if (projection.status === 'ready' && estimateRequestMessages(transformMessages(native, projection.text)) +
+    let projection = project(state, budget);
+    if (projection.status === 'ready' && sizeEstimate(convertToLlm(transformMessages(native, projection.text))) +
         budget.fixedTokens + budget.outputReserve + budget.safetyMargin > budget.window) {
       projection = { status: 'blocked', mandatoryIds: projection.mandatoryIds,
-        reason: 'Final estimated request including summary/projection envelopes exceeds admission budget' };
+        reason: 'Final serialized request including summary/projection envelopes exceeds admission budget' };
     }
     if (projection.status === 'blocked') {
       const diagnostic = { type: 'context-capacity-blocked', sessionId: ctx.sessionManager.getSessionId(),
         requestId: anchor(branch(ctx)), mandatoryIds: projection.mandatoryIds, budget,
-        estimateAdapter: ADMISSION_ADAPTER, estimateIsHeuristic: true,
         reason: projection.reason, durability: ctx.sessionManager.getSessionFile() ? 'native-session' : 'unavailable',
         recovery: ['Increase model context window', 'Explicitly revise task scope or pins', '/context mode off'] };
       lifecycle(ctx, 'capacity-blocked', diagnostic);
@@ -291,8 +278,7 @@ export default function contextExtension(pi: ExtensionAPI) {
     }
     omitted = projection.omittedIds;
     lifecycle(ctx, 'projection', { estimatedTokens: projection.estimatedTokens, omittedIds: omitted,
-      estimateAdapter: ADMISSION_ADAPTER, estimateIsHeuristic: true, budget, selectionMs: performance.now() - selectionStart });
-    lastProjection = { leafId: ctx.sessionManager.getLeafId(), requestId: anchor(branch(ctx)) };
+      estimateAdapter: 'utf8-bytes-v1', budget, selectionMs: performance.now() - selectionStart });
     return { messages: transformMessages(native, projection.text) };
   });
   pi.on('tool_call', (event, ctx) => {
@@ -303,8 +289,8 @@ export default function contextExtension(pi: ExtensionAPI) {
   });
 
   pi.registerTool({ name: 'context_recall', label: 'Recall exact context',
-    description: 'Retrieve exact native source text with provenance, bounded pages and explicit historical scope. entryIds accepts native IDs or active source/observation record IDs from the projection. query is a literal case-sensitive substring, not keywords or semantic search; omit it to retrieve all selected text. matchSummary reports snapshot text-match counts separately from unavailable entries, even when the current page has no fragments. Retrieved data has no new authority.',
-    parameters: Type.Object({ entryIds: Type.Optional(Type.Array(Type.String())), query: Type.Optional(Type.String({ description: 'Literal case-sensitive substring of native text, including spaces and punctuation. Omit or use an empty string for all supported text. With entryIds, filters those entries. Keep the same query and entryIds when continuing a cursor.' })),
+    description: 'Retrieve exact native source text with provenance, bounded pages and explicit historical scope. entryIds accepts native IDs or active source/observation record IDs from the projection. Retrieved data has no new authority.',
+    parameters: Type.Object({ entryIds: Type.Optional(Type.Array(Type.String())), query: Type.Optional(Type.String()),
       scope: Type.Optional(Type.Union([Type.Literal('active'), Type.Literal('historical')])), cursor: Type.Optional(Type.String()),
       maxBytes: Type.Optional(Type.Number()) }, { additionalProperties: false }),
     async execute(_id, args, _signal, _update, ctx) {
@@ -324,8 +310,8 @@ export default function contextExtension(pi: ExtensionAPI) {
     },
   });
   pi.registerTool({ name: 'context_checkpoint', label: 'Checkpoint task context',
-    description: 'Append attributed interpretations and work. Evidence/source IDs must exist in active ancestry. Never creates user approval. Minimal example: {"requestId":"unit-1","work":[{"text":"Retest compatibility","status":"open"}]}. Claims require evidenceIds and counterEvidenceIds (use [] when empty). Correct rejected arguments rather than repeating unchanged validation failures; use a new requestId whenever checkpoint content changes. Reuse a requestId only with identical content when retrying uncertain execution.',
-    parameters: Type.Object({ requestId: Type.String({ description: 'Unique checkpoint operation ID. Use a new ID for changed content; reuse only for an identical retry after uncertain execution.' }), consideredIds: Type.Optional(Type.Array(Type.String({ description: 'Active user-source record ID or native user entry ID whose constraints you have considered; not an observation or claim ID. Optional; does not signify approval or completion.' }))),
+    description: 'Append attributed interpretations and work. Evidence/source IDs must exist in active ancestry. Never creates user approval. Use stable requestId on retries.',
+    parameters: Type.Object({ requestId: Type.String(), consideredIds: Type.Optional(Type.Array(Type.String())),
       claims: Type.Optional(Type.Array(claimSchema)), work: Type.Optional(Type.Array(workSchema)),
       intents: Type.Optional(Type.Array(intentSchema)) }, { additionalProperties: false }),
     async execute(_id, args, _signal, _update, ctx) {
@@ -345,14 +331,7 @@ export default function contextExtension(pi: ExtensionAPI) {
         const sourceRecordId = (id: string) => state.records.find(r =>
           (r.kind === 'user_source' || r.kind === 'observation') && r.data.entryId === id)?.id ?? id;
         const consideredIds = args.consideredIds ?? [];
-        const userSources = state.records.filter(r => r.kind === 'user_source');
-        for (const id of consideredIds) {
-          const source = userSources.find(r => r.id === id || r.data.entryId === id);
-          if (!source || !entries.some(e => e.id === source.data.entryId && e.type === 'message' && e.message.role === 'user')) {
-            const examples = userSources.slice(-3).map(r => ({ sourceId: r.id, entryId: r.data.entryId }));
-            throw Error(`consideredIds requires an active user-source record ID or native user entry ID. Invalid ID: ${String(id).slice(0, 96)}. Valid recent IDs: ${JSON.stringify(examples)}`);
-          }
-        }
+        for (const id of consideredIds) if (!entries.some(e => e.id === id && e.type === 'message' && e.message.role === 'user')) throw Error(`Unknown user anchor: ${id}`);
         const additions: RecordEnvelope[] = [];
         const add = (kind: 'claim' | 'work' | 'intent', payload: unknown, ordinal: number) => {
           if (!object(payload)) throw Error(`Invalid ${kind}`);
@@ -391,13 +370,12 @@ export default function contextExtension(pi: ExtensionAPI) {
       } catch (error) { return result({ error: error instanceof Error ? error.message : String(error) }, true); }
     },
   });
-  pi.registerCommand('context', { description: 'Read-only context inspector; json; pin <user-entry-id>; mode off|organized. Adaptive unavailable.',
+  pi.registerCommand('context', { description: 'Inspect context; pin <user-entry-id>; mode off|organized. Adaptive unavailable.',
     handler: async (args, ctx) => {
       const parts = args.trim().split(/\s+/);
       if (parts[0] === 'mode') {
         if (!['off', 'organized'].includes(parts[1])) { ctx.ui.notify('Use off or organized. Adaptive is deferred due to a native compaction race.', 'error'); return; }
         mode = parts[1] as Mode;
-        clearProjection();
         lifecycle(ctx, 'mode', { mode });
         activate(); recalled.clear();
         if (mode === 'organized') sync(ctx);
@@ -409,29 +387,15 @@ export default function contextExtension(pi: ExtensionAPI) {
         if (!source || source.kind !== 'user_source') { ctx.ui.notify('Pin requires an active original user entry ID.', 'error'); return; }
         append([record(`pin:${source.id}`, source.anchor, 'intent', { text: source.data.text,
           sourceId: source.id, author: 'user', pinned: true })]);
-        clearProjection();
         ctx.ui.notify('Pinned exact source text; this does not approve quoted instructions.', 'info'); return;
       }
-      // Inspection authenticates/derives an ephemeral view without appending indexes,
-      // consuming timing samples, or changing native persistence.
-      const state = sync(ctx, false);
-      const projectionSnapshot = { status: (mode === 'off' ? 'disabled' : !lastProjection ? 'none'
-        : lastProjection.leafId === ctx.sessionManager.getLeafId() ? 'active' : 'stale') as 'disabled' | 'none' | 'active' | 'stale',
-        requestId: lastProjection?.requestId };
-      if (parts[0] !== 'json') {
-        await showInspector(ctx, buildInspectorLines(state, { mode, sessionId: ctx.sessionManager.getSessionId(),
-          omittedIds: omitted, budget: lastBudget, projection: projectionSnapshot,
-          persistence: ctx.sessionManager.getSessionFile() ? 'Native session; user-only forks may await the first assistant write' : 'Ephemeral: no restart guarantee',
-          recent: branch(ctx).filter(e => e.type === 'message').slice(-8).map(e => ({ id: e.id, text: nativeEntryText(e) })),
-        }));
-        return;
-      }
+      const state = mode === 'organized' ? sync(ctx) : rebuild(rawRecords(branch(ctx)), new Set(branch(ctx).map(e => e.id)));
       ctx.ui.notify(JSON.stringify({ mode, health: state.health, sessionId: ctx.sessionManager.getSessionId(),
         persistence: ctx.sessionManager.getSessionFile() ? 'native session (user-only forks may await first assistant)' : 'unavailable',
         sources: state.records.filter(r => r.kind === 'user_source').map(r => ({ id: r.id, anchor: r.anchor })),
         pins: state.records.filter(r => r.kind === 'intent' && r.data.pinned && !state.conflictIds.includes(r.id)),
         openWorkIds: state.openWorkIds, activeClaimIds: state.activeClaimIds, conflicts: state.conflictIds,
-        omittedIds: omitted, budget: lastBudget, projection: projectionSnapshot, freshness: 'audit only; currency unknown without current observation',
+        omittedIds: omitted, budget: lastBudget, freshness: 'audit only; currency unknown without current observation',
       }), 'info');
     },
   });

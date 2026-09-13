@@ -251,6 +251,17 @@ and the complete historical benchmark environment are not public, so this is
 not a claim of full independent reproducibility. The mechanics tests are
 reproducible; the public aggregates can be checked arithmetically.
 
+For readers who want to compare the implementations, I also published two
+snapshot branches: [the original scored memory extension](https://github.com/xCatG/pi-context-ext/tree/codex/organized-scored)
+and [the final subtraction-only extension](https://github.com/xCatG/pi-context-ext/tree/codex/subtraction-v2).
+Both put the active implementation at `src/index.ts`, so you can
+[browse the code differences directly](https://github.com/xCatG/pi-context-ext/compare/codex%2Forganized-scored..codex%2Fsubtraction-v2)
+or follow each branch's run instructions. `main` keeps the reports and repaired
+preview. The memory branch deliberately preserves the scored version's known
+defects; these are historical snapshots, not two recommended product versions.
+The experiments also used different cohorts and policies, so comparing their
+code does not make the measurements a head-to-head comparison.
+
 It might still be a useful reference for Pi extension APIs, exact-history
 retrieval, correction handling, or simply what a context experiment looks like
 when it doesn't earn its overhead. It should not be installed on the promise
